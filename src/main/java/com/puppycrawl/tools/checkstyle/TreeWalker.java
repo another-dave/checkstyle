@@ -178,7 +178,7 @@ public final class TreeWalker
         // check if already checked and passed the file
         final String fileName = file.getPath();
         final long timestamp = file.lastModified();
-        if (cache.alreadyChecked(fileName, timestamp)
+        if (cache.inCache(fileName, timestamp)
                  || !Utils.fileExtensionMatches(file, getFileExtensions())) {
             return;
         }
@@ -217,7 +217,7 @@ public final class TreeWalker
         }
 
         if (getMessageCollector().size() == 0) {
-            cache.checkedOk(fileName, timestamp);
+            cache.put(fileName, timestamp);
         }
     }
 
@@ -466,7 +466,7 @@ public final class TreeWalker
         for (Check c : commentChecks) {
             c.destroy();
         }
-        cache.destroy();
+        cache.persist();
         super.destroy();
     }
 
